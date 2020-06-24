@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\FriendsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FriendsRepository::class)
@@ -17,23 +18,38 @@ class Friends
      */
     private $id;
 
+    
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=30)
+     /**
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters",
+     *      allowEmptyString = false
+     * )
      */
     private $name;
 
-    /**
+    
+      /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     /**
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' KO."
+     * )
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $ville;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string")
+      * @Assert\Regex("/^[0-9]{10}$/")
      */
     private $tel;
 
@@ -78,12 +94,12 @@ class Friends
         return $this;
     }
 
-    public function getTel(): ?int
+    public function getTel(): ?string
     {
         return $this->tel;
     }
 
-    public function setTel(?int $tel): self
+    public function setTel(?string $tel): self
     {
         $this->tel = $tel;
 
